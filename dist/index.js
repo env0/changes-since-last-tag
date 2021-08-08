@@ -1522,7 +1522,7 @@ function getPreviousTag(o) {
         // This could be undefined
         const previousTag = res[index + 1];
         if (previousTag) {
-            core.info(`Comparing ${previousTag}...${o.tag}`);
+            core.info(`Comparing ${previousTag.name}...${o.tag}`);
         }
         else {
             core.info(`${o.tag} is the first tag`);
