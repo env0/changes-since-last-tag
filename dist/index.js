@@ -1510,7 +1510,8 @@ function getPreviousTag(o) {
         //   }
         // ]
         // Note reverse is in place
-	                core.info(`then returned!`);
+	core.info(`then returned!`);
+	core.info(`${res.map(a=>a.name)}`);
         const index = res.findIndex(tag => tag.name === o.tag);
         if (index === -1) {
 		core.info(`Unable to find "${o.tag}" in "${res.map(({ name }) => name)}"`);
@@ -1521,6 +1522,8 @@ function getPreviousTag(o) {
         }
         // This could be undefined
         const previousTag = res[index + 1];
+	core.info(`previousTag is ${previousTag}`);
+
         if (previousTag) {
             core.info(`Comparing ${previousTag}...${o.tag}`);
         }
