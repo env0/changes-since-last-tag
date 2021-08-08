@@ -1468,6 +1468,7 @@ function getInputs() {
     });
 }
 function getPreviousTag(o) {
+	core.info(`getting previous tag with ${o.repo} and ${o.owner}`);
     return neverthrow_1.ResultAsync.fromPromise(o.client.paginate(o.client.repos.listTags, {
         repo: o.repo,
         owner: o.owner
@@ -1509,8 +1510,10 @@ function getPreviousTag(o) {
         //   }
         // ]
         // Note reverse is in place
+	                core.info(`then returned!`);
         const index = res.findIndex(tag => tag.name === o.tag);
         if (index === -1) {
+		core.info(`Unable to find "${o.tag}" in "${res.map(({ name }) => name)}"`);
             return neverthrow_1.err({
                 error: undefined,
                 message: `Unable to find "${o.tag}" in "${res.map(({ name }) => name)}"`
@@ -1519,10 +1522,10 @@ function getPreviousTag(o) {
         // This could be undefined
         const previousTag = res[index + 1];
         if (previousTag) {
-            core.debug(`Comparing ${previousTag}...${o.tag}`);
+            core.info(`Comparing ${previousTag}...${o.tag}`);
         }
         else {
-            core.debug(`${o.tag} is the first tag`);
+            core.info(`${o.tag} is the first tag`);
         }
         return neverthrow_1.ok(Object.assign(Object.assign({}, o), { currentTag: o.tag, previousTag: previousTag === null || previousTag === void 0 ? void 0 : previousTag.name }));
     });
@@ -1542,7 +1545,7 @@ function getChangedFiles(o) {
         message: `There was an error comparing ${o.previousTag}...${o.currentTag} for ${o.owner}/${o.repo}`,
         type: 'error'
     })).map(res => {
-        core.debug(`Found ${res.length} changed files`);
+        core.info(`Found ${res.length} changed files`);
         return Object.assign(Object.assign({}, o), { changedFiles: res });
     });
 }
@@ -1579,11 +1582,11 @@ function run() {
                 // If there isn't at least one match, filter out the file
                 if (!o.glob.some(glob => minimatch_1.default(file.filename, glob)))
                     return false;
-                core.debug(`Matched "${file.filename}"`);
+                core.info(`Matched "${file.filename}"`);
                 return true;
             });
-            core.debug(`Filtered out ${previousLength - o.changedFiles.length} file(s) using given blob`);
-            core.debug(`There are ${o.changedFiles.length} files remaining`);
+            core.info(`Filtered out ${previousLength - o.changedFiles.length} file(s) using given blob`);
+            core.info(`There are ${o.changedFiles.length} files remaining`);
             return o;
         })
             .andThen(sortChangedFiles)
