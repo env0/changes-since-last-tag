@@ -1582,6 +1582,7 @@ function run() {
             .map(o => {
             const previousLength = o.changedFiles.length;
             o.changedFiles = o.changedFiles.filter(file => {
+		core.info(`Checking "${file.filename}", ${JSON.stringify(file)}`);
                 // If there isn't at least one match, filter out the file
                 if (!o.glob.some(glob => minimatch_1.default(file.filename, glob)))
                     return false;
