@@ -1581,6 +1581,8 @@ function run() {
             .andThen(getChangedFiles)
             .map(o => {
             const previousLength = o.changedFiles.length;
+            core.info(`Globs "${JSON.stringify(o.glob)}`);
+
             o.changedFiles = o.changedFiles.filter(file => {
 		core.info(`Checking "${file.filename}", ${JSON.stringify(file)}`);
                 // If there isn't at least one match, filter out the file
